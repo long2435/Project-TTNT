@@ -1,0 +1,11 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2>{{ news.title }}</h2>
+  <img src="{{ news.image.url }}" class="img-fluid mb-4" alt="{{ news.title }}">
+  <p>{{ news.content|linebreaks }}</p>
+  <a href="{% url 'tech_news' %}" class="btn btn-secondary mt-3">← Quay lại</a>
+</div>
+{% endblock %}

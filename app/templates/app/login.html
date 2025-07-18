@@ -1,0 +1,74 @@
+{% extends 'app/base.html' %}
+{% block main_content %}
+<style>
+  body {
+    background: linear-gradient(135deg, #a8e063, #56ab2f); /* nền xanh lá */
+  }
+  .login-container {
+    max-width: 500px;
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  .login-container:hover {
+    transform: translateY(-5px);
+  }
+  .form-control {
+    border-radius: 10px;
+    transition: 0.3s;
+  }
+  .form-control:focus {
+    border-color: #56ab2f;
+    box-shadow: 0 0 10px rgba(86, 171, 47, 0.4);
+  }
+  .btn-login {
+    background: linear-gradient(135deg, #56ab2f, #a8e063);
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.3s;
+    color: white;
+  }
+  .btn-login:hover {
+    background: linear-gradient(135deg, #6fcf3d, #a2d85c);
+    transform: scale(1.05);
+  }
+  .text-green {
+    color: #4caf50;
+  }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="login-container">
+    <h2 class="text-center mb-4 text-green"> Đăng nhập tài khoản</h2>
+
+    {% if form.errors %}
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Lỗi đăng nhập:</strong> Kiểm tra lại tài khoản hoặc mật khẩu.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endif %}
+
+    <form method="POST" novalidate>
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label fw-semibold" for="username"><i class="fas fa-user text-green"></i> Tài khoản</label>
+        <input type="text" name="username" id="username" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-semibold" for="password"><i class="fas fa-lock text-green"></i> Mật khẩu</label>
+        <input type="password" name="password" id="password" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-login w-100">Đăng nhập</button>
+    </form>
+
+    <p class="text-center mt-3 mb-0">
+      Chưa có tài khoản? <a href="{% url 'register' %}" class="text-decoration-none fw-bold text-green">Đăng ký ngay</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

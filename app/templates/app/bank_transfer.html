@@ -1,0 +1,29 @@
+{% extends 'app/base.html' %}
+
+{% block content_checkout %}
+<div class="container py-5 text-center">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <h2 class="mb-4">Chuyển khoản ngân hàng</h2>
+    <p>Vui lòng chuyển khoản theo thông tin sau:</p>
+
+    <div class="card p-4 mx-auto shadow" style="max-width: 450px;">
+        <p><strong>Ngân hàng:</strong> BIDV</p>
+        <p><strong>Số tài khoản:</strong> 0363487057</p>
+        <p><strong>Tên người nhận:</strong> NGUYEN NHAT LONG</p>
+        <p><strong>Nội dung chuyển khoản:</strong> Thanh toán đơn hàng #{{ order.id }}</p>
+    </div>
+
+    <a href="{% url 'home' %}" class="btn btn-success mt-4">
+        Xác nhận đã thanh toán
+    </a>
+</div>
+{% endblock content_checkout %}

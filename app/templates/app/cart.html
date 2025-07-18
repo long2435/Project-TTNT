@@ -1,0 +1,153 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block cart_content %}
+
+<!-- Hiển thị thông báo nếu có -->
+{% if messages %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {% for message in messages %}
+      <div>{{ message }}</div>
+    {% endfor %}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+{% endif %}
+
+<div class="row">
+  <div class="col-lg-12">
+    <!-- Thanh công cụ -->
+    <div class="box-element">
+      <a class="btn btn-outline-dark" href="{% url 'home' %}">&#x2190; Continue Shopping</a>
+      <br><br>
+      <table class="table">
+        <tr>
+          <th><h5>Items: <strong>{{ order.get_cart_items }}</strong></h5></th>
+          <th><h5>Total: <strong>${{ order.get_cart_total }}</strong></h5></th>
+          <th><a class="btn btn-success" href="{% url 'checkout' %}">Checkout</a></th>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Danh sách sản phẩm trong giỏ hàng -->
+    <div class="box-element">
+      <div class="cart-row d-flex align-items-center">
+        <div class="col-2"><strong>Item</strong></div>
+        <div class="col-2"><strong>Price</strong></div>
+        <div class="col-2"><strong>Quantity</strong></div>
+        <div class="col-2"><strong>Total</strong></div>
+        <div class="col-1"><strong>Remove</strong></div>
+      </div>
+
+      {% if items %}
+        {% for item in items %}
+        <div class="cart-row d-flex align-items-center">
+          <div class="col-2 d-flex align-items-center">
+            <img class="row-image" src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="width: 50px; height: 50px;">
+            <p class="ms-2">{{ item.product.name }}</p>
+          </div>
+
+          <div class="col-2">
+            {% if item.product.discount_price and item.product.discount_price < item.product.price %}
+              <p>
+                <span class="text-danger">${{ item.product.discount_price }}</span>
+                <del class="text-muted">${{ item.product.price }}</del>
+              </p>
+            {% else %}
+              <p>${{ item.product.price }}</p>
+            {% endif %}
+          </div>
+
+          <!-- Input số lượng -->
+          <div class="col-2">
+            <form class="update-quantity-form" data-product="{{ item.product.id }}">
+              <input type="number" value="{{ item.quantity }}" min="1" class="form-control quantity-input" style="width: 70px; padding: 4px; text-align: center;">
+            </form>
+          </div>
+
+          <!-- Tổng giá -->
+          <div class="col-2"><p>${{ item.get_total }}</p></div>
+
+          <div class="col-1">
+            <button class="btn btn-danger btn-sm delete-item" data-product="{{ item.product.id }}">&#10006;</button>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p>Your cart is empty.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock cart_content %}
+
+{% block scripts %}
+<script>
+  // Hàm lấy CSRF token
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  // Gửi AJAX khi số lượng thay đổi
+  document.querySelectorAll('.update-quantity-form').forEach(form => {
+    const input = form.querySelector('.quantity-input');
+
+    input.addEventListener('change', function () {
+      const productId = form.dataset.product;
+      const quantity = parseInt(this.value);
+
+      if (quantity < 1 || isNaN(quantity)) return;
+
+      fetch('/update_item/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+          productId: productId,
+          action: 'update',
+          quantity: quantity
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        location.reload();
+      });
+    });
+  });
+
+  // Xử lý xóa sản phẩm khi click nút xoá
+  document.querySelectorAll('.delete-item').forEach(button => {
+    button.addEventListener('click', function () {
+      const productId = this.dataset.product;
+
+      fetch('/update_item/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+          productId: productId,
+          action: 'remove'
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        location.reload();
+      });
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block banner_slider %}
+<!-- Slider Code của bạn -->
+<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="3" aria-label="Slide 4"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active" data-bs-interval="2000">
+      <img style="width:100%" src="https://cdn.hoanghamobile.com/i/home/Uploads/2025/04/01/vnsky-banner-1200x375.png" title="Trọn gói 99K | 6GB lướt mạng thả ga">
+      <div class="carousel-caption d-none d-md-block bg-success bg-opacity-75 text-white rounded">
+        <h5>Sản phẩm chất lượng cao</h5>
+        <p>Lựa chọn hoàn hảo cho cuộc sống tiện nghi và hiện đại.</p>
+      </div>
+    </div>
+
+    <div class="carousel-item" data-bs-interval="2000">
+      <img style="width:100%" src="https://cdn.hoanghamobile.com/i/home/Uploads/2025/04/15/m4-w.png" title="Macbook Air M4">
+      <div class="carousel-caption d-none d-md-block bg-success bg-opacity-75 text-white rounded">
+        <h5>Ưu đãi mỗi ngày</h5>
+        <p>Giá tốt - Chất lượng đảm bảo - Giao hàng tận nơi.</p>
+      </div>
+    </div>
+
+    <div class="carousel-item" data-bs-interval="2000">
+      <img style="width:100%" src="https://cdn.hoanghamobile.com/i/home/Uploads/2025/05/05/a06-a16-a26-5g-1200x375.jpg" title="Galaxy A06 5G | A16 5G | A26 5G">
+      <div class="carousel-caption d-none d-md-block bg-success bg-opacity-75 text-white rounded">
+        <h5>Mua sắm dễ dàng</h5>
+        <p>Chỉ vài cú click để sở hữu sản phẩm bạn yêu thích.</p>
+      </div>
+    </div>
+
+    <div class="carousel-item" data-bs-interval="2000">
+      <img style="width:100%" src="https://cdn.hoanghamobile.com/i/home/Uploads/2025/05/13/thu-cu-wweb.png" title="Đổi máy cũ - Sắm máy xịn">
+      <div class="carousel-caption d-none d-md-block bg-success bg-opacity-75 text-white rounded">
+        <h5>Hàng mới liên tục</h5>
+        <p>Cập nhật mẫu mã, xu hướng và sản phẩm hot mỗi tuần.</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+{% endblock %}
+
+{% block main_content %}
+<div class="container mt-5">
+  {% if messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {% for message in messages %}
+        <div>{{ message }}</div>
+      {% endfor %}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endif %}
+
+  <div class="container mt-5">
+    <!-- Tiêu đề "SẢN PHẨM NỔI BẬT" -->
+    <h2 class="text-center mb-4">SẢN PHẨM NỔI BẬT</h2>
+
+  <!-- Phần tìm kiếm và lọc sản phẩm -->
+  <div class="row mb-4">
+    <form class="d-flex" method="get" action="{% url 'home' %}">
+      <input class="form-control me-2" type="search" name="q" placeholder="Tìm sản phẩm..." value="{{ query }}">
+      <input class="form-control me-2" type="number" name="min_price" placeholder="Giá từ" value="{{ min_price }}">
+      <input class="form-control me-2" type="number" name="max_price" placeholder="Giá đến" value="{{ max_price }}">
+      <button class="btn btn-outline-success" type="submit">Tìm</button>
+    </form>
+  </div>
+
+  <!-- Danh sách sản phẩm -->
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 text-center">
+    {% for product in page_obj %}
+      {% include 'app/product_card.html' %}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- PHÂN TRANG -->
+<div class="mt-4">
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1{% if query %}&q={{ query }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if category_filter %}&category={{ category_filter }}{% endif %}">Trang đầu</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if category_filter %}&category={{ category_filter }}{% endif %}">Trước</a>
+        </li>
+      {% endif %}
+
+      <li class="page-item active">
+        <span class="page-link">
+          Trang {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+        </span>
+      </li>
+
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if category_filter %}&category={{ category_filter }}{% endif %}">Tiếp</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if category_filter %}&category={{ category_filter }}{% endif %}">Trang cuối</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+</style>
+{% endblock %}
