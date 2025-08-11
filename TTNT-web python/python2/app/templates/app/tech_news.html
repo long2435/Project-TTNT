@@ -1,0 +1,23 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">Tin Tức Công Nghệ</h2>
+  <div class="row">
+    {% for news in news_list %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.title }}">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ news.title }}</h5>
+          <p class="card-text">{{ news.content|truncatewords:20 }}</p>
+          <a href="{% url 'tech_news_detail' news.slug %}" class="btn btn-primary mt-auto">Đọc tiếp</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>Hiện chưa có bài viết nào.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

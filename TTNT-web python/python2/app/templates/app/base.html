@@ -1,0 +1,305 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Web bán hàng online - Chuyên cung cấp sản phẩm chất lượng" />
+    <meta name="keywords" content="bán hàng online, sản phẩm điện tử" />
+    <meta name="author" content="Tên bạn" />
+    
+    <title>Web bán hàng online</title>
+
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="{% static 'app/css/style.css' %}" rel="stylesheet" />
+    <link href="{% static 'app/css/owl.carousel.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'app/css/all.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'app/css/main.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.min.js"></script>
+    <script src="{% static 'app/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'app/js/all.min.js' %}"></script>
+    <script src="{% static 'app/js/myscript.js' %}" defer></script>
+
+  </head>
+  <body>
+    <!-- Header -->
+<nav class="navbar navbar-expand-lg custom-navbar">
+
+ <a class="navbar-brand fw-bold ms-3 d-flex align-items-center" href="{% url 'home' %}" 
+   style="font-size: 30px; color: #39FF14; 
+          text-shadow: 0 0 4px #39FF14, 0 0 8px #39FF14; 
+          font-family: 'Orbitron', sans-serif; transition: transform 0.3s ease-in-out;">
+  EXTRA
+</a>
+
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/' %} active {% endif %}" href="{% url 'home' %}">Trang Chủ</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Danh Mục</a>
+          <ul class="dropdown-menu">
+            {% for cat in categories %}
+            <li>
+              <a class="dropdown-item" href="{% url 'category_products' cat.slug %}">{{ cat.name }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/khuyen-mai/' %} active {% endif %}" href="{% url 'promotion_products' %}">Khuyến mãi</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/tin-cong-nghe/' %} active {% endif %}" href="{% url 'tech_news' %}">Tin Công Nghệ</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        {% if request.user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="fas fa-user-circle me-1"></i> {{ request.user.username }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="{% url 'profile' %}">Trang cá nhân</a></li>
+            <li><a class="dropdown-item" href="{% url 'orders_placed' %}">Đơn hàng đã đặt</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Đăng xuất</a></li>
+          </ul>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}">
+            <i class="fas fa-sign-in-alt me-1 text-info"></i> Đăng nhập
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'register' %}">Đăng ký</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'cart' %}">
+            <i class="fas fa-shopping-cart me-1 text-secondary"></i> Giỏ hàng
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+    <!-- Main Body -->
+    {% block banner_slider %}{% endblock %}
+    {% block main_content %}{% endblock %}
+    {% block cart_content %}{% endblock %}
+    {% block content_checkout %}{% endblock %}
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-5 pb-4 mt-5">
+      <div class="container text-md-left">
+        <div class="row text-md-left">
+          <!-- Cột 1 -->
+          <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+            <h5 class="text-uppercase mb-4 font-weight-bold text-warning">Web Bán Hàng</h5>
+            <p>Chuyên cung cấp các sản phẩm điện tử, phụ kiện chất lượng cao với dịch vụ giao hàng nhanh chóng.</p>
+          </div>
+    
+          <!-- Cột 2 -->
+          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+            <h5 class="text-uppercase mb-4 font-weight-bold text-warning">Sản phẩm</h5>
+            <p><a href="#" class="text-white text-decoration-none">Điện thoại</a></p>
+            <p><a href="#" class="text-white text-decoration-none">Laptop</a></p>
+            <p><a href="#" class="text-white text-decoration-none">TV</a></p>
+            <p><a href="#" class="text-white text-decoration-none">Đồng Hồ Thông Minh</a></p>
+          </div>
+    
+          <!-- Cột 3 -->
+<div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+  <h5 class="text-uppercase mb-4 font-weight-bold text-warning">Liên kết nhanh</h5>
+  <p><a href="{% url 'home' %}" class="text-white text-decoration-none">Trang chủ</a></p>
+  <p><a href="{% url 'cart' %}" class="text-white text-decoration-none">Giỏ hàng</a></p>
+  <p><a href="{% url 'promotion_products' %}" class="text-white text-decoration-none">Khuyến mãi</a></p>
+  <p><a href="{% url 'tech_news' %}" class="text-white text-decoration-none">Tin Công Nghệ</a></p>
+</div>
+
+
+    
+          <!-- Cột 4 -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+            <h5 class="text-uppercase mb-4 font-weight-bold text-warning">Liên hệ</h5>
+            <p><i class="fas fa-home mr-3"></i> 123 Đường ABC, TP.Đà Nẵng</p>
+            <p><i class="fas fa-envelope mr-3"></i> support@webbanhang.vn</p>
+            <p><i class="fas fa-phone mr-3"></i> +84 036 348 7057</p>
+            <p><i class="fas fa-print mr-3"></i> +84 034 994 0520</p>
+          </div>
+        </div>
+    
+        <hr class="mb-4" />
+    
+        <div class="row align-items-center">
+          <div class="col-md-7 col-lg-8">
+            <p>© 2025 Bản quyền thuộc về <strong class="text-warning">Extra</strong>. All rights reserved.</p>
+          </div>
+          <div class="col-md-5 col-lg-4">
+            <div class="text-center text-md-right">
+              <a class="btn btn-outline-light btn-floating m-1" role="button"><i class="fab fa-facebook-f"></i></a>
+              <a class="btn btn-outline-light btn-floating m-1" role="button"><i class="fab fa-twitter"></i></a>
+              <a class="btn btn-outline-light btn-floating m-1" role="button"><i class="fab fa-instagram"></i></a>
+              <a class="btn btn-outline-light btn-floating m-1" role="button"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Nút Lên đầu -->
+    <button onclick="topFunction()" id="backToTopBtn" title="Lên đầu trang">
+      <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <style>
+  .navbar-brand {
+    font-size: 30px;
+    color: #39FF14;
+    text-shadow: 0 0 8px #39FF14, 0 0 16px #39FF14, 0 0 32px #39FF14;
+    font-family: 'Orbitron', sans-serif; /* Sử dụng font hiện đại */
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .navbar-brand:hover {
+    transform: scale(1.1) rotate(5deg); /* Phóng to và xoay nhẹ khi hover */
+    text-shadow: 0 0 15px #39FF14, 0 0 30px #39FF14, 0 0 45px #39FF14; /* Tăng độ sáng khi hover */
+  }
+</style>
+
+<!-- Thêm font "Orbitron" cho phong cách công nghệ -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+
+    <style>
+      #backToTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 40px;
+        right: 30px;
+        z-index: 99;
+        font-size: 18px;
+        border: none;
+        outline: none;
+        background-color: #ffc107;
+        color: white;
+        cursor: pointer;
+        padding: 12px 16px;
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      }
+
+      #backToTopBtn:hover {
+        background-color: #e0a800;
+      }
+    </style>
+
+    <script>
+      window.onscroll = function () {
+        scrollFunction();
+      };
+
+      function scrollFunction() {
+        const btn = document.getElementById("backToTopBtn");
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      }
+
+      function topFunction() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    </script>
+    
+
+    <!-- JS bổ sung từ các template con -->
+    {% block scripts %}
+      <script src="{% static 'app/js/cart.js' %}"></script>
+    {% endblock %}
+
+    <style>
+  .custom-navbar {
+    background: linear-gradient(to right, #2ecc71, #27ae60);
+  }
+
+  .custom-navbar .nav-link {
+    color: white;
+    position: relative; /* Để gạch chân di chuyển */
+    transition: all 0.3s ease;
+    padding: 8px 15px;
+    border-radius: 8px;
+  }
+
+  .custom-navbar .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.6); /* Màu gạch chân với độ mờ */
+    bottom: 0;
+    left: 50%;
+    transition: width 0.3s ease, left 0.3s ease, background-color 0.3s ease;
+  }
+
+  .custom-navbar .nav-link:hover,
+  .custom-navbar .nav-link:focus {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fffbe6;
+    transform: translateY(-2px);
+  }
+
+  .custom-navbar .nav-link:hover::after {
+    width: 100%;
+    left: 0; /* Gạch chân sẽ đi từ trái sang phải */
+    background-color: rgba(255, 255, 255, 0.9); /* Làm sáng gạch chân khi hover */
+  }
+
+  .custom-navbar .nav-link.active::after {
+    width: 100%; /* Gạch chân vẫn còn khi liên kết đang active */
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.9); /* Màu sáng cho gạch chân khi active */
+  }
+
+  .custom-navbar .dropdown-menu a:hover {
+    background-color: #e9ecef;
+    color: #28a745;
+  }
+
+  .custom-navbar .dropdown-toggle::after {
+    transition: transform 0.3s ease;
+  }
+
+  .custom-navbar .dropdown-toggle:hover::after {
+    transform: rotate(180deg);
+  }
+
+  .navbar-toggler {
+    border: none;
+  }
+</style>
+
+
+
+  </body>
+</html>

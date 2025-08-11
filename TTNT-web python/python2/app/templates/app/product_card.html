@@ -1,0 +1,115 @@
+<style>
+  .product {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+  }
+
+  .product:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .image-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 200px;
+    width: 100%;
+  }
+
+  .image-wrapper img {
+    transition: transform 0.3s ease;
+    object-fit: cover;
+  }
+
+  .product:hover .image-wrapper img {
+    transform: scale(1.05) rotate(0.3deg);
+  }
+
+  .sale-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: red;
+    color: white;
+    padding: 3px 8px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 5px;
+    z-index: 10;
+  }
+</style>
+
+<div class="col-6 col-sm-6 col-md-4 col-lg-2 mb-4">
+  <div class="box-element product p-3 bg-light border rounded h-100 d-flex flex-column align-items-center shadow-sm hover-lift">
+
+    <!-- Hình ảnh -->
+    <div class="image-wrapper mb-2">
+      {% if product.discount_price and product.discount_price < product.price %}
+        <div class="sale-badge">Giảm giá</div>
+      {% endif %}
+      <img class="img-fluid w-100 h-100" src="{{ product.ImageURL }}" alt="{{ product.name }}">
+    </div>
+
+    <!-- Tên sản phẩm -->
+    <h6 class="text-center">
+      <a href="{% url 'product_detail' product.id %}" class="text-decoration-none text-dark">
+        <strong>{{ product.name }}</strong>
+      </a>
+    </h6>
+
+    <hr class="w-100 my-2">
+
+    <!-- Nút thêm vào giỏ -->
+    <a href="{% url 'add_to_cart' product.id %}" class="btn btn-outline-secondary btn-sm w-100 mb-2">
+      Thêm vào giỏ hàng
+    </a>
+
+    <!-- Link xem chi tiết -->
+    <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-success btn-sm w-100 mb-2">
+      Xem chi tiết
+    </a>
+
+    <!-- Modal chi tiết sản phẩm -->
+    <div class="modal fade" id="productModal{{ product.id }}" tabindex="-1" aria-labelledby="productModalLabel{{ product.id }}" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="productModalLabel{{ product.id }}">{{ product.name }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+          </div>
+          <div class="modal-body d-flex flex-wrap">
+            <img src="{{ product.ImageURL }}" alt="{{ product.name }}" class="img-fluid me-4 mb-3" style="max-width: 300px; flex: 1 1 auto;">
+            <div style="flex: 2 1 auto;">
+              <p><strong>Mô tả:</strong> {{ product.description|default:"Không có mô tả." }}</p>
+              <p><strong>Giá:</strong>
+                {% if product.discount_price and product.discount_price < product.price %}
+                  <del>{{ product.price }}₫</del> <strong class="text-danger">{{ product.discount_price }}VNĐ</strong>
+                {% else %}
+                  {{ product.price }}VNĐ
+                {% endif %}
+              </p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <form method="post" action="{% url 'add_to_cart_then_checkout' product.id %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary">Mua ngay</button>
+            </form>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Giá -->
+    <div class="mt-auto">
+      {% if product.discount_price and product.discount_price < product.price %}
+        <p><del>{{ product.price }}VNĐ</del> <strong class="text-danger">{{ product.discount_price }}VNĐ</strong></p>
+      {% else %}
+        <p><strong>{{ product.price }}VNĐ</strong></p>
+      {% endif %}
+    </div>
+
+  </div>
+</div>

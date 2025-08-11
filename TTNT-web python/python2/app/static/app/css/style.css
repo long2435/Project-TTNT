@@ -1,0 +1,152 @@
+/* ===================== */
+/* OWL CAROUSEL */
+/* ===================== */
+.owl-carousel .item {
+  font-size: 24px;
+  text-align: center;
+  margin-top: 20px;
+  transition: transform 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.owl-carousel .item:hover {
+  transform: scale(1.05);
+}
+
+/* Điều chỉnh vị trí nút điều hướng */
+.owl-next {
+  float: right;
+}
+
+.owl-prev {
+  float: left;
+}
+
+.owl-prev span,
+.owl-next span {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* ===================== */
+/* NỀN CÁC VÙNG KHÁC NHAU */
+/* ===================== */
+.buttermilk {
+  background-color: #fff;
+  background-image: linear-gradient(#fff7ef, #fff);
+  padding: 50px 40px 20px;
+  border: 1px solid #efe8e1;
+}
+
+.smbg {
+  background-color: #fff;
+  background-image: linear-gradient(rgba(110, 69, 143, 0.1), #fff);
+}
+
+.curdbgpro {
+  background-color: #fff;
+  background-image: linear-gradient(rgba(10, 77, 123, 0.1), #fff);
+}
+
+.goodnessseccont img {
+  width: 100%;
+}
+
+.mlkpro {
+  color: #636362;
+  font-size: 22px;
+  line-height: 22px;
+  margin-bottom: 15px;
+  width: 43%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.goodnesssec a {
+  text-decoration: none;
+}
+
+/* ===================== */
+/* ẢNH SẢN PHẨM DÙNG CHUNG */
+/* ===================== */
+.image-wrapper {
+  height: 200px; /* Đồng bộ giữa home & danh mục */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.image-wrapper img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain; /* Giữ nguyên tỷ lệ ảnh */
+  transition: transform 0.3s ease;
+}
+
+.image-wrapper img:hover {
+  transform: scale(1.1);
+}
+
+/* ===================== */
+/* GRID HIỂN THỊ DANH MỤC */
+/* ===================== */
+.row.row-cols-lg-5 {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.row.row-cols-lg-5 > .col {
+  flex: 0 0 20%;  /* 100% / 5 = 20% */
+  max-width: 20%;
+  padding: 0 10px; /* Cách đều giữa các sản phẩm */
+  box-sizing: border-box;
+}
+
+/* Responsive grid */
+.row.row-cols-1,
+.row.row-cols-sm-2,
+.row.row-cols-md-3 {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.row.row-cols-1 .col {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.row.row-cols-sm-2 .col {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.row.row-cols-md-3 .col {
+  flex: 0 0 33.3333%;
+  max-width: 33.3333%;
+}
+
+/* ===================== */
+/* CARD HÌNH ẢNH SẢN PHẨM */
+/* ===================== */
+.card-img-top {
+  height: 200px;
+  width: 100%;
+  object-fit: contain; /* KHÔNG cắt ảnh */
+}
+
+/* ===================== */
+/* HIỆU ỨNG KHI HOVER SẢN PHẨM */
+/* ===================== */
+.product {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}

@@ -1,0 +1,90 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow-lg border-0 rounded-4">
+    <div class="row g-0">
+      <div class="col-md-4 text-center bg-light p-4 rounded-start">
+        {% if user.userprofile.avatar %}
+        <img src="{{ user.userprofile.avatar.url }}" class="img-fluid rounded-circle shadow mb-3" width="140" height="140" alt="Avatar">
+        {% else %}
+        <img src="{% static 'app/images/avatar-default.png' %}" class="img-fluid rounded-circle shadow mb-3" width="140" height="140" alt="Avatar">
+        {% endif %}
+        <h5 class="fw-bold mt-2">{{ user.get_full_name }}</h5>
+        <p class="text-muted">{{ user.email }}</p>
+      </div>
+
+      <div class="col-md-8 p-5">
+        <h3 class="mb-4">👤 Thông tin cá nhân</h3>
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="id_full_name" class="form-label">Họ và tên</label>
+              <input type="text" class="form-control" id="id_full_name" name="full_name"
+                     value="{{ user.first_name }} {{ user.last_name }}">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="id_email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="id_email" name="email" value="{{ user.email }}">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="id_phone" class="form-label">Số điện thoại</label>
+              <input type="text" class="form-control" id="id_phone" name="phone" value="{{ profile.phone }}">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="id_birth_date" class="form-label">Ngày sinh</label>
+              <input type="date" class="form-control" id="id_birth_date" name="birth_date"
+                     value="{{ profile.birth_date|date:'Y-m-d' }}">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="id_gender" class="form-label">Giới tính</label>
+              <select class="form-select" id="id_gender" name="gender">
+                <option value="" {% if not profile.gender %}selected{% endif %}>-- Chọn giới tính --</option>
+                <option value="Nam" {% if profile.gender == 'Nam' %}selected{% endif %}>Nam</option>
+                <option value="Nữ" {% if profile.gender == 'Nữ' %}selected{% endif %}>Nữ</option>
+                <option value="Khác" {% if profile.gender == 'Khác' %}selected{% endif %}>Khác</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="id_avatar" class="form-label">Ảnh đại diện</label>
+              <input type="file" class="form-control" id="id_avatar" name="avatar">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="id_address" class="form-label">Địa chỉ</label>
+            <textarea class="form-control" id="id_address" name="address" rows="2">{{ profile.address }}</textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="id_bio" class="form-label">Giới thiệu bản thân</label>
+            <textarea class="form-control" id="id_bio" name="bio" rows="3">{{ profile.bio }}</textarea>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success px-4"> Cập nhật</button>
+            <a class="btn btn-outline-danger px-4" href="{% url 'logout' %}"> Đăng xuất</a>
+          </div>
+        </form>
+
+        {% if messages %}
+        <div class="alert alert-success mt-4" role="alert">
+          {% for message in messages %}
+            <div>{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

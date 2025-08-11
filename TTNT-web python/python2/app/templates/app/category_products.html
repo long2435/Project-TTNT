@@ -1,0 +1,28 @@
+{% extends 'app/base.html' %}
+
+{% block main_content %}
+<div class="container mt-5">
+
+  <!-- Tìm kiếm và lọc giá trong danh mục -->
+  <div class="row mb-4">
+    <form class="d-flex" method="get" action="">
+      <input class="form-control me-2" type="search" name="q" placeholder="Tìm sản phẩm..." value="{{ request.GET.q }}">
+      <input class="form-control me-2" type="number" name="min_price" placeholder="Giá từ" value="{{ request.GET.min_price }}">
+      <input class="form-control me-2" type="number" name="max_price" placeholder="Giá đến" value="{{ request.GET.max_price }}">
+      <button class="btn btn-outline-success" type="submit">Lọc</button>
+    </form>
+  </div>
+
+  <!-- Danh sách sản phẩm -->
+  <div class="row text-center">
+    {% if products %}
+      {% for product in products %}
+        {% include 'app/product_card.html' %}
+      {% endfor %}
+    {% else %}
+      <p class="text-muted">Không tìm thấy sản phẩm nào phù hợp.</p>
+    {% endif %}
+  </div>
+  
+</div>
+{% endblock %}
